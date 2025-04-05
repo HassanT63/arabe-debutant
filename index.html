@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lire et écrire l’arabe</title>
+<link href="css/style.css" rel="stylesheet"/>
+<!-- Police arabe élégante et lisible -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri&amp;display=swap" rel="stylesheet"/>
+</head>
+<body >
+<!-- Barre de navigation -->
+<nav class="sidebar">
+<h1>Apprendre l’arabe</h1>
+<ul>
+<li class="menu-item active" data-target="etape1">1. Alphabet phonétique</li>
+<li class="menu-item" data-target="etape2">2. Lettres arabes</li>
+<li class="menu-item" data-target="etape3">3. Écriture</li>
+<li class="menu-item" data-target="etape4">4. Accents/Voyelles/Harakat</li>
+<li class="menu-item" data-target="etape5">5. Tanwin(doubles voyelles)</li>
+<li class="menu-item" data-target="etape6">6. Mots simples</li>
+<li class="menu-item" data-target="etape7">7. Phrases simples</li>
+</ul>
+</nav>
+<!-- Contenu principal -->
+<main >
+<!-- ÉTAPE 1 -->
+<section class="etape active" id="etape1">
+    <h2>Étape 1 : L’alphabet phonétique arabe</h2>
+  
+    <p>
+      Voici les sons arabes utilisés dans la langue, avec leur transcription en alphabet latin et un bouton pour écouter chaque son :
+    </p>
+  
+    <div class="table-wrapper">
+        <table>
+            <thead>
+              <tr>
+                <th>Lettre</th>
+                <th>Nom</th>
+                <th>Prononciation</th>
+                <th>Audio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ا</td><td>Alif</td><td>“a” long</td><td><button class="btn-audio" data-son="alif.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ب</td><td>Ba</td><td>“b” normal</td><td><button class="btn-audio" data-son="ba.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ت</td><td>Ta</td><td>“t” classique</td><td><button class="btn-audio" data-son="ta.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ث</td><td>Tha</td><td>“th” doux (comme “think”)</td><td><button class="btn-audio" data-son="tha.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ج</td><td>Jim</td><td>“j” comme “je”</td><td><button class="btn-audio" data-son="jiim.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ح</td><td>Ha</td><td>“h” expiré (guttural)</td><td><button class="btn-audio" data-son="hha.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>خ</td><td>Kha</td><td>“r” râpé (gorge)</td><td><button class="btn-audio" data-son="kha.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>د</td><td>Dal</td><td>“d” classique</td><td><button class="btn-audio" data-son="daal.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ذ</td><td>Dhal</td><td>“th” sonore (comme “this”)</td><td><button class="btn-audio" data-son="thaal.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ر</td><td>Ra</td><td>“r” roulé</td><td><button class="btn-audio" data-son="ra.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ز</td><td>Zay</td><td>“z” comme “zèbre”</td><td><button class="btn-audio" data-son="zay.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>س</td><td>Sin</td><td>“s” classique</td><td><button class="btn-audio" data-son="siin.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ش</td><td>Shin</td><td>“ch” comme “chat”</td><td><button class="btn-audio" data-son="shiin.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ص</td><td>Sad</td><td>“s” emphatique</td><td><button class="btn-audio" data-son="saad.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ض</td><td>Dad</td><td>“d” emphatique</td><td><button class="btn-audio" data-son="daad.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ط</td><td>Ta emphatique</td><td>“t” emphatique</td><td><button class="btn-audio" data-son="taa.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ظ</td><td>Dha emphatique</td><td>“z” emphatique</td><td><button class="btn-audio" data-son="thaa.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ع</td><td>Ayn</td><td>“ʿ” (gorge, difficile)</td><td><button class="btn-audio" data-son="ayn.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>غ</td><td>Ghayn</td><td>“r” guttural</td><td><button class="btn-audio" data-son="ghayn.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ف</td><td>Fa</td><td>“f” classique</td><td><button class="btn-audio" data-son="fa.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ق</td><td>Qaf</td><td>“k” profond (gorge)</td><td><button class="btn-audio" data-son="qaf.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ك</td><td>Kaf</td><td>“k” normal</td><td><button class="btn-audio" data-son="kaf.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ل</td><td>Lam</td><td>“l” doux</td><td><button class="btn-audio" data-son="lam.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>م</td><td>Mim</td><td>“m” comme “maman”</td><td><button class="btn-audio" data-son="miim.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ن</td><td>Nun</td><td>“n” classique</td><td><button class="btn-audio" data-son="nuun.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ه</td><td>Ha</td><td>“h” doux, soufflé</td><td><button class="btn-audio" data-son="ha.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>و</td><td>Waw</td><td>“w” comme “oui”</td><td><button class="btn-audio" data-son="waw.mp3" data-dir="lettres">🔊</button></td></tr>
+              <tr><td>ي</td><td>Ya</td><td>“y” comme “yaourt”</td><td><button class="btn-audio" data-son="ya.mp3" data-dir="lettres">🔊</button></td></tr>
+            </tbody>
+          </table>
+    </div>
+    <h3>Quiz : Retrouve le nom de la lettre</h3>
+<div id="quiz-lettres-noms">
+<p class="arabe" id="question-lettre-nom"><strong>?</strong></p>
+<div id="reponses-lettres-noms"></div>
+<p id="feedback-lettres-noms"></p>
+<p id="score-lettres-noms">Score : 0</p>
+<button id="restart-lettres-noms">🔁 Rejouer</button>
+</div>
+  </section>
+  
+
+<!-- ÉTAPE 2 -->
+<section class="etape" id="etape2">
+    <h2>Étape 2 : Reconnaître les lettres arabes isolées</h2>
+    <p>Voici les lettres arabes isolées, avec leur nom, leur transcription phonétique et un bouton pour écouter la prononciation.</p>
+  
+    <div class="lettres-grille">
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ا</div>
+        <div class="lettre-nom">Alif</div>
+        <div class="transcription">ʾā</div>
+        <button class="btn-audio" data-son="alif.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ب</div>
+        <div class="lettre-nom">Ba</div>
+        <div class="transcription">b</div>
+        <button class="btn-audio" data-son="ba.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ت</div>
+        <div class="lettre-nom">Ta</div>
+        <div class="transcription">t</div>
+        <button class="btn-audio" data-son="ta.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ث</div>
+        <div class="lettre-nom">Tha</div>
+        <div class="transcription">th</div>
+        <button class="btn-audio" data-son="tha.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ج</div>
+        <div class="lettre-nom">Jiim</div>
+        <div class="transcription">j</div>
+        <button class="btn-audio" data-son="jiim.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ح</div>
+        <div class="lettre-nom">Hha</div>
+        <div class="transcription">ḥ</div>
+        <button class="btn-audio" data-son="hha.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">خ</div>
+        <div class="lettre-nom">Kha</div>
+        <div class="transcription">kh</div>
+        <button class="btn-audio" data-son="kha.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">د</div>
+        <div class="lettre-nom">Daal</div>
+        <div class="transcription">d</div>
+        <button class="btn-audio" data-son="daal.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ذ</div>
+        <div class="lettre-nom">Dhaal</div>
+        <div class="transcription">dh</div>
+        <button class="btn-audio" data-son="thaal.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ر</div>
+        <div class="lettre-nom">Ra</div>
+        <div class="transcription">r</div>
+        <button class="btn-audio" data-son="ra.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ز</div>
+        <div class="lettre-nom">Zay</div>
+        <div class="transcription">z</div>
+        <button class="btn-audio" data-son="zay.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">س</div>
+        <div class="lettre-nom">Siin</div>
+        <div class="transcription">s</div>
+        <button class="btn-audio" data-son="siin.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ش</div>
+        <div class="lettre-nom">Shiin</div>
+        <div class="transcription">sh</div>
+        <button class="btn-audio" data-son="shiin.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ص</div>
+        <div class="lettre-nom">Saad</div>
+        <div class="transcription">ṣ</div>
+        <button class="btn-audio" data-son="saad.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ض</div>
+        <div class="lettre-nom">Daad</div>
+        <div class="transcription">ḍ</div>
+        <button class="btn-audio" data-son="daad.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ط</div>
+        <div class="lettre-nom">Taa</div>
+        <div class="transcription">ṭ</div>
+        <button class="btn-audio" data-son="taa.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ظ</div>
+        <div class="lettre-nom">Zaa</div>
+        <div class="transcription">ẓ</div>
+        <button class="btn-audio" data-son="thaa.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ع</div>
+        <div class="lettre-nom">ʿAyn</div>
+        <div class="transcription">ʿ</div>
+        <button class="btn-audio" data-son="ayn.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">غ</div>
+        <div class="lettre-nom">Ghayn</div>
+        <div class="transcription">gh</div>
+        <button class="btn-audio" data-son="ghayn.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ف</div>
+        <div class="lettre-nom">Fa</div>
+        <div class="transcription">f</div>
+        <button class="btn-audio" data-son="fa.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ق</div>
+        <div class="lettre-nom">Qaf</div>
+        <div class="transcription">q</div>
+        <button class="btn-audio" data-son="qaf.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ك</div>
+        <div class="lettre-nom">Kaf</div>
+        <div class="transcription">k</div>
+        <button class="btn-audio" data-son="kaf.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ل</div>
+        <div class="lettre-nom">Lam</div>
+        <div class="transcription">l</div>
+        <button class="btn-audio" data-son="lam.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">م</div>
+        <div class="lettre-nom">Miim</div>
+        <div class="transcription">m</div>
+        <button class="btn-audio" data-son="miim.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ن</div>
+        <div class="lettre-nom">Nuun</div>
+        <div class="transcription">n</div>
+        <button class="btn-audio" data-son="nuun.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ه</div>
+        <div class="lettre-nom">Ha</div>
+        <div class="transcription">h</div>
+        <button class="btn-audio" data-son="ha.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">و</div>
+        <div class="lettre-nom">Waw</div>
+        <div class="transcription">w</div>
+        <button class="btn-audio" data-son="waw.mp3" data-dir="prononciation">🔊</button>
+      </div>
+      <div class="carte-lettre">
+        <div class="lettre-arabe">ي</div>
+        <div class="lettre-nom">Ya</div>
+        <div class="transcription">y</div>
+        <button class="btn-audio" data-son="ya.mp3" data-dir="prononciation">🔊</button>
+      </div>
+    </div>
+    <h3>Quiz : Trouve la transcription phonétique</h3> 
+<div id="quiz-container">
+  <div class="arabe" id="quiz-lettre">?</div>
+  <div class="audio-aide">
+    <span class="audio-texte-aide">Aide à la prononciation :</span>
+    <button id="btn-audio-lettre">🔊 Écouter</button>
+  </div>   
+  <div id="quiz-options"></div>
+  <div id="quiz-feedback"></div>
+  <div id="quiz-score">Score : 0</div>
+  <button id="btn-restart">🔁 Rejouer</button>
+</div>
+  </section>
+  
+  
+<hr/>
+<hr/>
+
+
+<!-- ÉTAPE 3 : Apprentissage du tracé -->
+<section class="etape" id="etape3">
+<h2>Étape 3 : Les lettres selon leur position dans un mot</h2>
+<h3> Écriture – Particularité des lettres qui ne s’attachent pas</h3>
+<p>En arabe, la plupart des lettres se lient entre elles, comme en écriture cursive. <br/>
+            🔸⚠️ <strong style="color: red;">Cependant, six lettres ont une particularité importante :</strong></p>
+<div class="non-liantes-info">
+<p><strong>Ces lettres <span class="important-orange">ne s’attachent jamais à la lettre qui les suit</span></strong>, même au milieu d’un mot :</p>
+<div class="non-liantes-grille">
+<div class="non-liante">أ</div>
+<div class="non-liante">د</div>
+<div class="non-liante">ذ</div>
+<div class="non-liante">ر</div>
+<div class="non-liante">ز</div>
+<div class="non-liante">و</div>
+</div>
+</div>
+<p>💡 Cela signifie que si l'une de ces lettres se trouve <strong>au milieu</strong> ou <strong>en début de mot</strong>, la lettre suivante ne s’attachera pas à elle. Elle reste donc « isolée » visuellement, même dans un mot écrit en continu.</p>
+<hr/>
+<h3>Quiz : La lettre peut-elle s’attacher à la suivante ?</h3>
+<div id="quiz-non-liantes">
+<div class="arabe" class="lettre-arabe" id="question-non-liante">?</div>
+<div id="reponses-non-liante">
+<button data-reponse="oui">✅ Oui</button>
+<button data-reponse="non">❌ Non</button>
+</div>
+<div id="feedback-non-liante"></div>
+<div id="score-non-liante">Score : 0</div>
+<button id="restart-non-liante">🔁 Rejouer</button>
+</div>
+<p>Voici un tableau visuel qui montre comment chaque lettre arabe s’écrit selon sa position : isolée, en début, milieu ou fin de mot.</p>
+<div style="text-align: center; margin-top: 30px;">
+<img alt="Tableau des lettres arabes par position" src="img/formes_lettres.png" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;"/>
+</div>
+<hr/>
+<h3>Quiz : Formes des lettres dans un mot</h3>
+<div id="quiz-formes">
+<p id="quiz-question-forme"><strong>?</strong></p>
+<div id="quiz-options-forme"></div>
+<p id="quiz-feedback-forme"></p>
+<p id="quiz-score-forme">Score : 0</p>
+<button id="quiz-restart-forme">🔁 Rejouer</button>
+</div>
+</section>
+<section class="etape" id="etape4">
+<h2>Étape 4 : Accents et voyelles courtes (Harakats)</h2>
+<p>En arabe, les accents appelés <strong>harakats</strong> servent à indiquer les voyelles courtes. Ils se placent au-dessus ou au-dessous des lettres. Voici les trois principaux :</p>
+<div class="harakat-table">
+<table>
+<thead>
+<tr>
+<th>Symbole</th>
+<th>Nom</th>
+<th>Sons</th>
+<th>Position</th>
+<th>Exemple arabe</th>
+<th>Transcription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="haraka arabe">َ</td>
+<td>Fatha</td>
+<td>a (comme dans “chat”)</td>
+<td>au-dessus</td>
+<td class="arabe">بَ</td>
+<td>ba</td>
+</tr>
+<tr>
+<td class="haraka arabe">ِ</td>
+<td>Kasra</td>
+<td>i (comme dans “ville”)</td>
+<td>en dessous</td>
+<td class="arabe">بِ</td>
+<td>bi</td>
+</tr>
+<tr>
+<td class="haraka arabe">ُ</td>
+<td>Damma</td>
+<td>ou (comme dans “mou”)</td>
+<td>au-dessus</td>
+<td class="arabe">بُ</td>
+<td>bou</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top: 20px;">Ces voyelles sont <strong>essentielles</strong> pour savoir comment prononcer une lettre dans un mot. Sans elles, on ne saurait pas comment vocaliser une consonne !</p>
+<hr/>
+<h3>Exemples simples :</h3>
+<ul class="harakat-exemples">
+<li><strong>مَ</strong> → <em>ma</em></li>
+<li><strong>مِ</strong> → <em>mi</em></li>
+<li><strong>مُ</strong> → <em>mou</em></li>
+<li><strong>سَ</strong> → <em>sa</em></li>
+<li><strong>سِ</strong> → <em>si</em></li>
+<li><strong>سُ</strong> → <em>sou</em></li>
+</ul>
+<hr/>
+<h3>Quiz : Quelle est la bonne voyelle ?</h3>
+<div id="quiz-harakat">
+<div class="harakat-lettre" id="harakat-question">?</div>
+<div id="harakat-options"></div>
+<div id="harakat-feedback"></div>
+<div id="harakat-score">Score : 0</div>
+<button id="harakat-restart">🔁 Rejouer</button>
+</div>
+</section>
+<section class="etape" id="etape5">
+<h2>Étape 5 : Tanwin (doubles voyelles)</h2>
+<p>En arabe, on utilise les <strong>doubles voyelles</strong> appelées <strong>tanwīn (تنوين)</strong> pour indiquer une terminaison particulière, souvent quand un mot est <strong>indéfini</strong> (ex. : un livre).</p>
+<div class="harakat-table">
+<table>
+<thead>
+<tr>
+<th>Symbole</th>
+<th>Nom</th>
+<th>Son</th>
+<th>Position</th>
+<th>Exemple</th>
+<th>Transcription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="haraka arabe">ً</td>
+<td>Fathatan</td>
+<td>an</td>
+<td>au-dessus</td>
+<td class="arabe">كِتَابً</td>
+<td>kitāban</td>
+</tr>
+<tr>
+<td class="haraka arabe">ٍ</td>
+<td>Kasratan</td>
+<td>in</td>
+<td>en-dessous</td>
+<td class="arabe">كِتَابٍ</td>
+<td>kitābin</td>
+</tr>
+<tr>
+<td class="haraka arabe">ٌ</td>
+<td>Dammatan</td>
+<td>oun</td>
+<td>au-dessus</td>
+<td class="arabe">كِتَابٌ</td>
+<td>kitāboun</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top: 20px;">
+          🔁 Ces marques ne changent pas la nature de la lettre, mais elles indiquent une <strong>nasalisation</strong> en fin de mot.  
+          <br/>💡 Elles sont utilisées uniquement à la <strong>fin des mots</strong> et souvent dans les phrases avec des noms indéfinis.
+        </p>
+<ul class="harakat-exemples">
+<li class="arabe"><strong>قَلَمٌ</strong> → <em>qalamoun</em></li>
+<li class="arabe"><strong>قَلَمٍ</strong> → <em>qalamin</em></li>
+<li class="arabe"><strong >قَلَمًا</strong> → <em>qalaman</em></li>
+</ul>
+<hr/>
+<h3>Quiz : Quelle est la bonne terminaison ?</h3>
+<div id="quiz-tanwin">
+<div class="arabe" class="harakat-lettre" id="tanwin-question">?</div>
+<div id="tanwin-options"></div>
+<div id="tanwin-feedback"></div>
+<div id="tanwin-score">Score : 0</div>
+<button id="tanwin-restart">🔁 Rejouer</button>
+</div>
+</section>
+<section class="etape" id="etape6">
+<h2>Étape 6 : Lire des mots simples (avec accents)</h2>
+<p>
+          Voici une sélection de <strong>mots simples arabes entièrement vocalisés</strong> grâce aux <strong>accents (harakats)</strong> appris dans les sections précédentes.
+          Ces mots contiennent des fatha (َ), kasra (ِ), damma (ُ), soukoun (ْ) ou tanwin, ce qui permet une lecture claire et précise.
+        </p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Mot accentué</th>
+<th>Transcription</th>
+<th>Traduction</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class="arabe">بَيْتٌ</td><td>baytoun</td><td>maison</td></tr>
+<tr><td class="arabe">بَابٌ</td><td>bāboun</td><td>porte</td></tr>
+<tr><td class="arabe">نُورٌ</td><td>nouroun</td><td>lumière</td></tr>
+<tr><td class="arabe">قَلْبٌ</td><td>qalboun</td><td>cœur</td></tr>
+<tr><td class="arabe">قَلَمٌ</td><td>qalamoun</td><td>stylo</td></tr>
+<tr><td class="arabe">عَيْنٌ</td><td>ʿaynoun</td><td>œil</td></tr>
+<tr><td class="arabe">يَدٌ</td><td>yadoun</td><td>main</td></tr>
+<tr><td class="arabe">رَجُلٌ</td><td>rajouloun</td><td>homme</td></tr>
+<tr><td class="arabe">أَمْرٌ</td><td>amroun</td><td>ordre</td></tr>
+<tr><td class="arabe">كَلْبٌ</td><td>kalboun</td><td>chien</td></tr>
+<tr><td class="arabe">قِطٌّ</td><td>qiṭṭoun</td><td>chat</td></tr>
+<tr><td class="arabe">شَمْسٌ</td><td>shamsoun</td><td>soleil</td></tr>
+<tr><td class="arabe">قَمَرٌ</td><td>qamaroun</td><td>lune</td></tr>
+<tr><td class="arabe">مَاءٌ</td><td>māʾoun</td><td>eau</td></tr>
+<tr><td class="arabe">نَارٌ</td><td>nāroun</td><td>feu</td></tr>
+<tr><td class="arabe">وَقْتٌ</td><td>waqtoun</td><td>temps</td></tr>
+<tr><td class="arabe">أَرْضٌ</td><td>arḍoun</td><td>terre</td></tr>
+<tr><td class="arabe">سَمَاءٌ</td><td>samāʾoun</td><td>ciel</td></tr>
+<tr><td class="arabe">وَلَدٌ</td><td>waladoun</td><td>garçon</td></tr>
+<tr><td class="arabe">بِنْتٌ</td><td>bintoun</td><td>fille</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Quiz : Retrouve le mot arabe à partir de sa prononciation</h3>
+<div id="quiz-mots-arabes">
+  <div id="mot-transcription" class="transcription-large">?</div>
+  <div id="mots-propositions"></div>
+  <div id="feedback-mots-arabes"></div>
+  <div id="score-mots-arabes">Score : 0</div>
+  <button id="restart-mots-arabes">🔁 Rejouer</button>
+</div>
+</section>
+<section class="etape" id="etape7">
+    <h2>Étape 7 : Premières phrases simples en arabe</h2>
+    <p>L’arabe est une langue logique et musicale. Commençons par apprendre quelques phrases courtes, faciles et utiles pour débuter en douceur. 🧠✨</p>
+  
+    <h3>1. Structure de base d'une phrase</h3>
+    <p>En arabe, une phrase simple peut souvent se composer ainsi :</p>
+    <ul>
+      <li><strong>Nom (sujet)</strong> + <strong>adjectif</strong> : par exemple « le garçon est grand »</li>
+      <li><strong>Pronom</strong> + <strong>verbe</strong> : par exemple « je vais »</li>
+      <li><strong>Nom</strong> + <strong>préposition</strong> + <strong>lieu</strong> : par exemple « le livre sur la table »</li>
+    </ul>
+  
+    <h3>2. Phrases utiles pour commencer</h3>
+    <table>
+      <thead>
+        <tr><th>Phrase arabe</th><th>Transcription</th><th>Traduction</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>اِسْمِي عَلِيٌّ</td><td>ismī ʿAlī</td><td>Je m'appelle Ali</td></tr>
+        <tr><td>مَنْ أَنْتَ؟</td><td>man anta ?</td><td>Qui es-tu ? (masc.)</td></tr>
+        <tr><td>أَنَا تِلْمِيذٌ</td><td>ʾanā tilmīdh</td><td>Je suis élève</td></tr>
+        <tr><td>هِيَ طَالِبَةٌ</td><td>hiya ṭāliba</td><td>Elle est étudiante</td></tr>
+        <tr><td>هٰذَا بَيْتٌ</td><td>hādhā bayt</td><td>Ceci est une maison</td></tr>
+        <tr><td>ٱلْوَلَدُ طَوِيلٌ</td><td>al-waladu ṭawīl</td><td>Le garçon est grand</td></tr>
+        <tr><td>ٱلْبِنْتُ جَمِيلَةٌ</td><td>al-bintu jamīla</td><td>La fille est belle</td></tr>
+        <tr><td>أَيْنَ ٱلْكِتَابُ؟</td><td>ʾayna al-kitābu ?</td><td>Où est le livre ?</td></tr>
+        <tr><td>ٱلْكِتَابُ عَلَى ٱلطَّاوِلَةِ</td><td>al-kitābu ʿalā aṭ-ṭāwila</td><td>Le livre est sur la table</td></tr>
+        <tr><td>أَنَا فِي ٱلْمَدْرَسَةِ</td><td>ʾanā fī al-madrasa</td><td>Je suis à l'école</td></tr>
+      </tbody>
+    </table>
+  
+    <h3>3. Astuces de prononciation et construction</h3>
+    <ul>
+      <li><strong>هٰذَا (hādhā)</strong> signifie « ceci » pour le masculin. Pour le féminin, on dira <strong>هٰذِهِ (hādhihi)</strong>.</li>
+      <li><strong>ٱلـ (al-)</strong> est l'article défini, comme « le » ou « la ».</li>
+      <li><strong>En arabe, on ne met pas toujours le verbe « être »</strong> dans les phrases au présent. Par exemple : « la maison grande » = « ٱلْبَيْتُ كَبِيرٌ » (al-baytu kabīr).</li>
+    </ul>
+  
+    <h3>🎯 Objectif de cette étape</h3>
+    <p>Être capable de :</p>
+    <ul>
+      <li>Te présenter</li>
+      <li>Poser une question simple</li>
+      <li>Identifier quelqu’un ou quelque chose</li>
+      <li>Faire une phrase avec un nom et un adjectif</li>
+    </ul>
+  
+    <h3>💬 À retenir :</h3>
+    <p>Commencer avec des phrases courtes t’aidera à te familiariser avec la musicalité et la logique de la langue arabe. Entraîne-toi à dire ces phrases à voix haute, avec les bons sons et l’intonation douce. 😌🗣️</p>
+    <h3>🎓 Quiz interactif : retrouve la bonne traduction</h3>
+    <div id="quiz-phrases-simples" style="margin-top: 25px; padding: 20px; border: 2px dashed #ccc; border-radius: 12px; background-color: #fefefe; text-align: center;">
+      <p id="phrase-question" style="font-size: 32px; font-weight: bold; margin-bottom: 20px;">Phrase</p>
+      <div id="phrase-options">
+        <!-- Options apparaîtront ici -->
+      </div>
+      <div id="phrase-feedback" style="margin-top: 15px; font-size: 18px;"></div>
+      <button id="btn-next-phrase" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; display: none;">👉 Question suivante</button>
+      <p id="phrase-score" style="margin-top: 15px; font-style: italic;">Score : 0</p>
+    </div>
+</section>
+  
+
+  
+</main>
+<!-- Script -->
+<script src="js/script.js"></script>
+</body>
+</html>
