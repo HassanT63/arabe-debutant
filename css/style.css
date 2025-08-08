@@ -778,7 +778,7 @@ body {
   :root{
     --bg:#0f1115;
     --panel:#151821;
-    --ink:#e6e8ee;
+    --ink:#000;
     --muted:#a5a7ae;
     --brand:#8b5cf6;
     --brand-2:#a78bfa;
@@ -913,170 +913,17 @@ input[type="text"], input[type="number"], select {
 /* Utility */
 .muted{ color: var(--muted); }
 .center{ text-align:center; }
+
+body { color: var(--ink) !important; }
+h1, h2, h3, h4, h5, h6 { color: #000 !important; }
+
 /* ================================
-   Override global – Couleur unique lisible
+   Global text color override
    ================================ */
-
-/* Couleur principale polyvalente (lisible sur clair/sombre) */
-:root {
-  --text-main: #3A6EA5;     /* Bleu acier */
-  --text-main-hover: #2F5784;
-  --text-muted: #5E83AF;    /* Légèrement atténué */
-  --border-soft: color-mix(in oklab, var(--text-main) 35%, transparent);
-  --bg-chip: color-mix(in oklab, var(--text-main) 12%, transparent);
+html, body, p, li, span, strong, em, small, label, th, td, h1, h2, h3, h4, h5, h6, a, a:visited, .quiz, .quiz *, button, input, select, textarea {
+    color: #3A6EA5 !important;
 }
 
-/* Texte générique */
-html, body, p, li, span, small, strong, em, label {
-  color: var(--text-main) !important;
-}
-
-/* Titres */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-main) !important;
-}
-
-/* Liens */
-a, a:visited {
-  color: var(--text-main) !important;
-  text-decoration: none;
-}
 a:hover, a:focus {
-  color: var(--text-main-hover) !important;
-  text-decoration: underline;
-}
-
-/* Texte atténué (ex. légendes, descriptions) */
-.muted, .note, .subtitle, .help, .hint, .text-muted,
-table .desc, figcaption, small {
-  color: var(--text-muted) !important;
-}
-
-/* Bordures et séparateurs (utilise la même teinte) */
-hr, .divider, .separator {
-  border-color: var(--border-soft) !important;
-  color: var(--border-soft) !important;
-}
-
-/* ================================
-   Tableaux (alphabets, listes, quiz)
-   ================================ */
-table, .table, table thead th, table td, table th {
-  color: var(--text-main) !important;
-  border-color: var(--border-soft) !important;
-}
-
-/* Zebra optionnel (très léger, lisible sur clair/sombre) */
-table tr:nth-child(even) td {
-  background: var(--bg-chip);
-}
-
-/* Boutons d'action dans les tableaux (audio, play, etc.) */
-.table button, .table .btn, .btn-audio, .btn-play, .btn-quiz {
-  color: var(--text-main) !important;
-  border: 1px solid var(--border-soft) !important;
-  background: transparent !important;
-  transition: transform .12s ease, background-color .12s ease, border-color .12s ease;
-}
-.table button:hover, .table .btn:hover, .btn-audio:hover, .btn-play:hover, .btn-quiz:hover {
-  border-color: var(--text-main-hover) !important;
-  background: var(--bg-chip) !important;
-  transform: translateY(-1px);
-}
-
-/* Icônes (haut-parleur, etc.) héritent de la couleur */
-svg, i, .icon, .iconify {
-  color: var(--text-main) !important;
-  fill: currentColor !important;
-}
-
-/* ================================
-   Quiz (labels, cases, feedback)
-   ================================ */
-.quiz, .quiz * {
-  color: var(--text-main) !important;
-}
-.quiz label, .quiz .option, .quiz .answer {
-  border: 1px solid var(--border-soft) !important;
-}
-.quiz .feedback, .quiz .result, .quiz .score {
-  color: var(--text-muted) !important;
-}
-
-/* ================================
-   Navigation latérale / Menus
-   ================================ */
-.sidebar, .nav, nav, .menu, .toc {
-  /* Les fonds restent ceux de ton thème; on teinte juste le texte et les bordures */
-  color: var(--text-main) !important;
-}
-.sidebar a, .nav a, .menu a, .toc a {
-  color: var(--text-main) !important;
-}
-.sidebar a.active, .nav a.active, .menu a.active, .toc a.active {
-  color: var(--text-main) !important;
-  outline: 2px solid var(--border-soft);
-  background: var(--bg-chip);
-  border-radius: 8px;
-}
-
-/* ================================
-   Champs de formulaire (recherche, inputs quiz)
-   ================================ */
-input, select, textarea {
-  color: var(--text-main) !important;
-  border: 1px solid var(--border-soft) !important;
-  background: transparent !important; /* conserve le thème */
-}
-input::placeholder, textarea::placeholder {
-  color: var(--text-muted) !important;
-}
-
-/* ================================
-   Responsive basique
-   ================================ */
-
-/* Tables scrollables sur mobile */
-.table-responsive, .table-wrap {
-  width: 100%;
-  overflow-x: auto;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 640px; /* évite la casse des colonnes; le conteneur gère le scroll */
-}
-
-/* Sidebar repliable sur mobile (si ta structure le permet) */
-@media (max-width: 992px) {
-  .layout {
-    display: block !important;
-  }
-  .sidebar {
-    position: relative !important;
-    width: 100% !important;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--border-soft);
-    padding-bottom: .75rem;
-  }
-}
-
-/* Grilles de cartes/sections (si utilisées) */
-.grid, .cards {
-  display: grid;
-  gap: 1rem;
-}
-@media (min-width: 640px) {
-  .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1024px) {
-  .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-/* ================================
-   Accessibilité : focus visible
-   ================================ */
-:focus-visible {
-  outline: 2px solid var(--text-main) !important;
-  outline-offset: 2px;
+    color: #2F5784 !important;
 }
