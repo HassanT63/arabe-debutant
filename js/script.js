@@ -841,3 +841,16 @@ document.addEventListener("DOMContentLoaded", () => {
     nouvelleQuestionPhrase();
   }
   
+
+// --- Mobile sidebar toggle ---
+(function(){
+  const nav = document.querySelector('nav.sidebar');
+  const btn = document.getElementById('mobile-menu-toggle');
+  if(nav && btn){
+    btn.addEventListener('click', ()=>{
+      const expanded = nav.getAttribute('aria-expanded') === 'true';
+      nav.setAttribute('aria-expanded', (!expanded).toString());
+      btn.setAttribute('aria-expanded', (!expanded).toString());
+    });
+  }
+})();
