@@ -10,6 +10,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Amiri&amp;display=swap" rel="stylesheet"/>
 </head>
 <body>
+<div class="header" style="display:flex;gap:.5rem;align-items:center;justify-content:flex-end;padding:.4rem 1rem;">
+<span>ID:</span><span id="current-id" style="padding:.1rem .4rem;border:1px solid rgba(58,110,165,.3);border-radius:8px"></span>
+<button class="btn-ghost" id="choose-id">Choisir identifiant</button>
+<a class="btn-ghost" href="suivi.html">Suivi</a>
+</div>
+
 <!-- Barre de navigation -->
 <nav aria-expanded="false" class="sidebar">
 <h1>Apprendre l’arabe</h1><button aria-controls="sidebar-menu" aria-expanded="false" id="mobile-menu-toggle">Menu</button>
@@ -547,6 +553,6 @@
 </section>
 </main>
 <!-- Script -->
-<script src="js/script.js"></script>
+<script src="js/progression.js"></script><script src="js/script.js"></script>
 </body>
 </html>
