@@ -1,3 +1,38 @@
+
+// === Suivi & progression loader ===
+(function(){
+  if (!window.__progression_loader_inserted__) {
+    window.__progression_loader_inserted__ = true;
+    function markReady(){ document.dispatchEvent(new Event('progression-ready')); }
+    // create script tag if not already present
+    var s = document.createElement('script');
+    s.src = 'js/progression.js';
+    s.defer = true;
+    s.onload = markReady;
+    document.head.appendChild(s);
+    // safeRecord waits until progression.js provides recordQuiz()
+    window.safeRecord = function(id, title, bonnes, fautes, total){
+      function go(){ if (typeof window.recordQuiz === 'function') { window.recordQuiz(id, title, bonnes, fautes, total); } }
+      if (typeof window.recordQuiz === 'function') { go(); } else { document.addEventListener('progression-ready', go, { once:true }); }
+    };
+    // Add "Suivi / Notes" in the menu if a sidebar/menu exists
+    document.addEventListener('DOMContentLoaded', function(){
+      var menus = document.querySelectorAll('nav.sidebar ul, .menu, .sidebar ul');
+      if (menus && menus.length){
+        menus.forEach(function(menu){
+          var li = document.createElement('li');
+          li.className = 'menu-item';
+          var a = document.createElement('a');
+          a.href = 'suivi.html';
+          a.textContent = 'Suivi / Notes';
+          li.appendChild(a);
+          menu.appendChild(li);
+        });
+      }
+    });
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
     // === NAVIGATION ENTRE ÉTAPES ===
     const menuItems = document.querySelectorAll(".menu-item");
@@ -147,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let score = 0;
+let triesPhonTxt = 0;
   
   function newQuizQuestion() {
     const quiz = document.getElementById("quiz-container");
@@ -206,6 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreForme = 0;
+let triesForme = 0;
   let verrouille = false;
   
   function newFormeQuestion() {
@@ -243,6 +280,16 @@ document.addEventListener("DOMContentLoaded", () => {
           feedbackZone.style.color = "red";
         }
         scoreZone.textContent = "Score : " + scoreForme;
+        triesForme++;
+        if (triesForme >= 20) {
+          const bonnes = scoreForme;
+          const total = 20;
+          const fautes = total - bonnes;
+          safeRecord('formes-lettres', 'Formes des lettres', bonnes, fautes, total);
+          alert('Quiz "Formes" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+          scoreForme = 0; triesForme = 0; scoreZone.textContent = "Score : 0";
+          return;
+        }
   
         setTimeout(() => {
           verrouille = false;
@@ -251,7 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       optionsZone.appendChild(btn);
     });
-  }
+    }
+
   
   const restartForme = document.getElementById("quiz-restart-forme");
   if (restartForme) {
@@ -297,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreLettreNom = 0;
+let triesNom = 0;
   
   function nouvelleQuestionLettreNom() {
     const question = document.getElementById("question-lettre-nom");
@@ -339,7 +388,17 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         score.textContent = "Score : " + scoreLettreNom;
-        setTimeout(nouvelleQuestionLettreNom, 3000);
+        triesNom++;
+        if (triesNom >= 20) {
+          const bonnes = scoreLettreNom;
+          const total = 20;
+          const fautes = total - bonnes;
+          safeRecord('noms-lettres', 'Nom des lettres', bonnes, fautes, total);
+          alert('Quiz "Nom des lettres" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+          scoreLettreNom = 0; triesNom = 0; score.textContent = "Score : 0";
+        } else {
+          setTimeout(nouvelleQuestionLettreNom, 3000);
+        }
       };
       
       reponses.appendChild(btn);
@@ -394,6 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreHarakat = 0;
+let triesHarakat = 0;
   
   function nouvelleQuestionHarakat() {
     const item = harakatQuizData[Math.floor(Math.random() * harakatQuizData.length)];
@@ -427,7 +487,17 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("harakat-score").textContent = "Score : " + scoreHarakat;
-        setTimeout(nouvelleQuestionHarakat, 3500);
+    triesHarakat++;
+    if (triesHarakat >= 20) {
+      const bonnes = scoreHarakat;
+      const total = 20;
+      const fautes = total - bonnes;
+      safeRecord('harakat', 'Voyelles courtes (harakāt)', bonnes, fautes, total);
+      alert('Quiz "Harakat" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+      scoreHarakat = 0; triesHarakat = 0; document.getElementById("harakat-score").textContent = "Score : 0";
+    } else {
+      setTimeout(nouvelleQuestionHarakat, 3500);
+    }
       };
       optionsZone.appendChild(btn);
     });
@@ -476,6 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreTanwin = 0;
+let triesTanwin = 0;
   
   function nouvelleQuestionTanwin() {
     const item = tanwinQuizData[Math.floor(Math.random() * tanwinQuizData.length)];
@@ -506,7 +577,17 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("tanwin-score").textContent = "Score : " + scoreTanwin;
-        setTimeout(nouvelleQuestionTanwin, 3500);
+    triesTanwin++;
+    if (triesTanwin >= 20) {
+      const bonnes = scoreTanwin;
+      const total = 20;
+      const fautes = total - bonnes;
+      safeRecord('tanwin', 'Tanwīn (doublement voyelles)', bonnes, fautes, total);
+      alert('Quiz "Tanwīn" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+      scoreTanwin = 0; triesTanwin = 0; document.getElementById("tanwin-score").textContent = "Score : 0";
+    } else {
+      setTimeout(nouvelleQuestionTanwin, 3500);
+    }
       };
       optionsZone.appendChild(btn);
     });
@@ -530,6 +611,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           ...lettresLiantes.map(l => ({ lettre: l, reponse: "oui" }))];
   
   let scoreNonLiante = 0;
+let triesNL = 0;
   
   function nouvelleQuestionNonLiante() {
     const item = quizLettresMix[Math.floor(Math.random() * quizLettresMix.length)];
@@ -552,7 +634,17 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("score-non-liante").textContent = "Score : " + scoreNonLiante;
-        setTimeout(nouvelleQuestionNonLiante, 3000);
+    triesNL++;
+    if (triesNL >= 20) {
+      const bonnes = scoreNonLiante;
+      const total = 20;
+      const fautes = total - bonnes;
+      safeRecord('liaison-lettres', 'Lettres liantes / non liantes', bonnes, fautes, total);
+      alert('Quiz "Liantes/Non-liantes" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+      scoreNonLiante = 0; triesNL = 0; document.getElementById("score-non-liante").textContent = "Score : 0";
+    } else {
+      setTimeout(nouvelleQuestionNonLiante, 3000);
+    }
       };
     });
   }
@@ -593,6 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreMots = 0;
+let triesMots = 0;
   let quizActif = true;
   
   function nouvelleQuestionMotsArabes() {
@@ -640,7 +733,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
   
         document.getElementById("score-mots-arabes").textContent = "Score : " + scoreMots;
-  
+        triesMots++;
+        if (triesMots >= 20) {
+          const bonnes = scoreMots;
+          const total = 20;
+          const fautes = total - bonnes;
+          safeRecord('mots-simples', 'Mots simples', bonnes, fautes, total);
+          alert('Quiz "Mots simples" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+          scoreMots = 0; triesMots = 0; document.getElementById("score-mots-arabes").textContent = "Score : 0";
+          return;
+        }
         // Bouton pour passer à la suite
         const nextBtn = document.createElement("button");
         nextBtn.id = "btn-suivant-mots";
@@ -651,9 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
         nextBtn.style.borderRadius = "8px";
         nextBtn.style.cursor = "pointer";
         nextBtn.onclick = () => nouvelleQuestionMotsArabes();
-  
         feedback.appendChild(nextBtn);
-      };
+    };
       zone.appendChild(btn);
     });
   }
@@ -710,6 +811,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scoreQuizAudio = 0;
+let triesPhonAudio = 0;
   let bonneReponse = null;
   let audioCourant = null;
   
@@ -746,7 +848,17 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.innerHTML = `<span style="color:red;">❌ Mauvais choix.</span> La bonne réponse était : <strong>${bonneReponse}</strong>`;
         }
         document.getElementById("quiz-score").textContent = `Score : ${scoreQuizAudio}`;
-        setTimeout(jouerQuestionPhonétique, 2500);
+    triesPhonAudio++;
+    if (triesPhonAudio >= 20) {
+      const bonnes = scoreQuizAudio;
+      const total = 20;
+      const fautes = total - bonnes;
+      safeRecord('alphabet-phon-audio', 'Alphabet phonétique (audio)', bonnes, fautes, total);
+      alert('Quiz audio terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+      scoreQuizAudio = 0; triesPhonAudio = 0; document.getElementById("quiz-score").textContent = "Score : 0";
+    } else {
+      setTimeout(jouerQuestionPhonétique, 2500);
+    }
       };
       optionsZone.appendChild(btn);
     });
@@ -788,6 +900,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   
   let scorePhrases = 0;
+let triesPhrases = 0;
   let phraseActuelle = null;
   
   function nouvelleQuestionPhrase() {
@@ -824,7 +937,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         document.getElementById("phrase-score").textContent = "Score : " + scorePhrases;
-        boutonSuivant.style.display = "inline-block";
+        triesPhrases++;
+        if (triesPhrases >= 20) {
+          const bonnes = scorePhrases;
+          const total = 20;
+          const fautes = total - bonnes;
+          safeRecord('phrases-simples', 'Phrases simples', bonnes, fautes, total);
+          alert('Quiz "Phrases simples" terminé ! Note : ' + Math.round((bonnes/total)*20*100)/100 + '/20');
+          scorePhrases = 0; triesPhrases = 0; document.getElementById("phrase-score").textContent = "Score : 0";
+        } else {
+          boutonSuivant.style.display = "inline-block";
+        }
       };
       optionsZone.appendChild(btn);
     });
