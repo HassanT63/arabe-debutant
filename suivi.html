@@ -12,7 +12,7 @@
     th{font-weight:bold}
     .header{display:flex;align-items:center;gap:.5rem;margin:.8rem 0}
     .id-pill{padding:.25rem .5rem;border:1px solid rgba(58,110,165,.3);border-radius:8px}
-    .btn{padding:.35rem .6rem;border:1px solid rgba(58,110,165,.3);background:transparent;border-radius:8px;cursor:pointer;text-decoration:none}
+    .btn{padding:.35rem .6rem;border:1px solid rgba(58,110,165,.3);background:transparent;border-radius:8px;cursor:pointer}
     .btn:hover{background:rgba(58,110,165,.12)}
   </style>
 </head>
@@ -21,6 +21,7 @@
     <div class="header">
       <strong>Suivi de :</strong>
       <span id="current-id" class="id-pill"></span>
+      <button id="choose-id" class="btn">Changer d'identifiant</button>
       <a class="btn" href="index.html">Accueil</a>
     </div>
     <h1>Résultats enregistrés</h1>
@@ -41,11 +42,8 @@
 
   <script src="js/progression.js"></script>
   <script>
-    document.addEventListener('progression-ready', render);
-    document.addEventListener('DOMContentLoaded', render);
     function render(){
-      if (typeof getReport !== 'function') return;
-      const r = getReport();
+      const r = window.getReport();
       const idSpan = document.getElementById('current-id');
       if(r.id) idSpan.textContent = r.id; else idSpan.textContent = '(aucun)';
       const tbody = document.querySelector('#tbl tbody');
@@ -58,17 +56,18 @@
       r.items.slice().reverse().forEach(it => {
         const tr = document.createElement('tr');
         const date = new Date(it.dateISO).toLocaleString();
-        tr.innerHTML = `
-          <td>${date}</td>
-          <td>${it.title || it.quizId}</td>
-          <td>${it.good}</td>
-          <td>${it.wrong}</td>
-          <td>${it.total}</td>
-          <td>${it.note20}</td>
-        `;
+        tr.innerHTML = \`
+          <td>\${date}</td>
+          <td>\${it.title || it.quizId}</td>
+          <td>\${it.good}</td>
+          <td>\${it.wrong}</td>
+          <td>\${it.total}</td>
+          <td>\${it.note20}</td>
+        \`;
         tbody.appendChild(tr);
       });
     }
+    document.addEventListener('DOMContentLoaded', render);
   </script>
 </body>
 </html>
