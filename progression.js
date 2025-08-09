@@ -118,10 +118,10 @@
 function buildIdModal(){
   if (document.getElementById('id-modal')) return;
   const modal = document.createElement('div'); modal.id='id-modal';
-  Object.assign(modal.style,{position:'fixed',inset:'0',background:'rgba(0,0,0,.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:'9999'});
+  Object.assign(modal.style,{position:'fixed',inset:'0',background:'rgba(0,0,0,.4)',display:'flex',alignItems:'center',justify-content:'center',zIndex:'9999'});
   const box = document.createElement('div');
   Object.assign(box.style,{background:'#fff',padding:'20px',borderRadius:'10px',maxWidth:'420px',width:'90%',boxShadow:'0 10px 30px rgba(0,0,0,.15)'});
-  box.innerHTML = '<h3 style="margin:0 0 8px">Choisir un identifiant</h3><p>Identifiant unique sur cet appareil pour suivre vos progrès.</p><input id="id-input" type="text" placeholder="ex: ali93" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px"><p id="id-error" style="color:#b00020;min-height:1.2em;margin:.5rem 0 0"></p><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:10px"><button id="id-cancel" style="padding:8px 12px;border-radius:8px;border:1px solid #ccc;background:#f7f7f7">Annuler</button><button id="id-ok" style="padding:8px 12px;border-radius:8px;border:1px solid #2b6cb0;background:#2b6cb0;color:#fff">Valider</button></div>';
+  box.innerHTML = '<h3 style="margin:0 0 8px">Choisir un identifiant</h3><p>Identifiant unique sur cet appareil pour suivre vos progrès.</p><input id="id-input" type="text" placeholder="ex: ali93" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px"><p id="id-error" style="color:#b00020;min-height:1.2em;margin:.5rem 0 0"></p><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:10px"><button id="id-cancel" style="padding:8px 12px;border-radius:8px;border:1px solid #ccc">Annuler</button><button id="id-ok" style="padding:8px 12px;border-radius:8px;border:1px solid #2b6cb0;background:#2b6cb0;color:#fff">Valider</button></div>';
   modal.appendChild(box); document.body.appendChild(modal);
   function close(){ modal.remove(); }
   document.getElementById('id-cancel').onclick = close;

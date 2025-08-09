@@ -1,3 +1,37 @@
+
+// === Résultat live sous quiz + enregistrement série ===
+window.showInlineResult = window.showInlineResult || function(anchorSelector, bonnes, fautes, total){
+  var host = document.querySelector(anchorSelector);
+  if(!host) return;
+  var box = host.querySelector('.inline-result-box');
+  if(!box){
+    box = document.createElement('div');
+    box.className = 'inline-result-box';
+    box.style.marginTop = '10px';
+    box.style.padding = '12px';
+    box.style.border = '1px solid #aac';
+    box.style.background = '#f8fbff';
+    box.style.borderRadius = '8px';
+    host.appendChild(box);
+  }
+  var note20 = total>0 ? Math.round((bonnes/total)*20*100)/100 : 0;
+  box.innerHTML = '<strong>Résultat :</strong> ' + bonnes + ' bonnes, ' + fautes + ' fautes, ' + total + ' au total — <strong>' + note20 + '/20</strong>';
+};
+
+window.__updateLive = window.__updateLive || function(state){
+  const bonnes = window[state.bonnesVar] || 0;
+  const tries  = window[state.triesVar]  || 0;
+  const fautes = Math.max(0, tries - bonnes);
+  window.showInlineResult(state.anchor, bonnes, fautes, tries);
+  if (tries >= 20) {
+    if (typeof window.recordQuiz === 'function') {
+      window.recordQuiz(state.key, state.title, bonnes, fautes, 20);
+    }
+    window[state.bonnesVar] = 0;
+    window[state.triesVar]  = 0;
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     // === NAVIGATION ENTRE ÉTAPES ===
     const menuItems = document.querySelectorAll(".menu-item");
@@ -856,34 +890,40 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 
 
-// === Série générique: observer les scores et enregistrer toutes les 20 tentatives ===
+// === Délégation de clics pour MAJ live à chaque réponse (mobile + PC) ===
 (function(){
   const QUIZZES = [
-    { anchor:'#quiz-container',     scoreSel:'#quiz-score',            id:'alphabet-phon-txt', title:'Alphabet phonétique (texte)' },
-    { anchor:'#quiz-formes',        scoreSel:'#quiz-score-forme',      id:'formes-lettres',     title:'Formes des lettres' },
-    { anchor:'#quiz-lettres-noms',  scoreSel:'#score-lettres-noms',    id:'noms-lettres',       title:'Nom des lettres' },
-    { anchor:'#quiz-harakat',       scoreSel:'#harakat-score',         id:'harakat',            title:'Voyelles courtes (harakāt)' },
-    { anchor:'#quiz-tanwin',        scoreSel:'#tanwin-score',          id:'tanwin',             title:'Tanwīn (doubles voyelles)' },
-    { anchor:'#quiz-non-liantes',   scoreSel:'#score-non-liante',      id:'liaison-lettres',    title:'Lettres liantes / non liantes' },
-    { anchor:'#quiz-mots-arabes',   scoreSel:'#score-mots-arabes',     id:'mots-simples',       title:'Mots simples' },
-    { anchor:'#quiz-phrases',       scoreSel:'#phrase-score',          id:'phrases-simples',    title:'Phrases simples' }
+    { anchor:'#quiz-container',     scoreSel:'#quiz-score',            key:'alphabet-phon-txt', title:'Alphabet phonétique (texte)', bonnesVar:'__good_phon',   triesVar:'__tries_phon' },
+    { anchor:'#quiz-formes',        scoreSel:'#quiz-score-forme',      key:'formes-lettres',     title:'Formes des lettres',          bonnesVar:'__good_forme',  triesVar:'__tries_forme' },
+    { anchor:'#quiz-lettres-noms',  scoreSel:'#score-lettres-noms',    key:'noms-lettres',       title:'Nom des lettres',             bonnesVar:'__good_nom',     triesVar:'__tries_nom' },
+    { anchor:'#quiz-harakat',       scoreSel:'#harakat-score',         key:'harakat',            title:'Voyelles courtes (harakāt)',  bonnesVar:'__good_harakat', triesVar:'__tries_harakat' },
+    { anchor:'#quiz-tanwin',        scoreSel:'#tanwin-score',          key:'tanwin',             title:'Tanwīn (doubles voyelles)',   bonnesVar:'__good_tanwin',  triesVar:'__tries_tanwin' },
+    { anchor:'#quiz-non-liantes',   scoreSel:'#score-non-liante',      key:'liaison-lettres',    title:'Lettres liantes / non liantes', bonnesVar:'__good_nl',   triesVar:'__tries_nl' },
+    { anchor:'#quiz-mots-arabes',   scoreSel:'#score-mots-arabes',     key:'mots-simples',       title:'Mots simples',                bonnesVar:'__good_mots',    triesVar:'__tries_mots' },
+    { anchor:'#quiz-phrases',       scoreSel:'#phrase-score',          key:'phrases-simples',    title:'Phrases simples',             bonnesVar:'__good_phr',     triesVar:'__tries_phr' }
   ];
-  function parseScore(txt){ const m=String(txt||'').match(/(\d+)/); return m?parseInt(m[1],10):0; }
-  function setup(q){
-    const scoreEl = document.querySelector(q.scoreSel);
-    if(!scoreEl) return;
-    let tries = 0;
-    const obs = new MutationObserver(()=>{
-      const scoreVal = parseScore(scoreEl.textContent);
-      tries++;
-      if(tries>=20){
-        const bonnes = scoreVal, total = 20, fautes = total - bonnes;
-        if (typeof window.recordQuiz === 'function') window.recordQuiz(q.id,q.title,bonnes,fautes,total);
-        if (typeof window.showInlineResult === 'function') window.showInlineResult(q.anchor,bonnes,fautes,total);
-        tries = 0;
-      }
-    });
-    obs.observe(scoreEl, {childList:true, characterData:true, subtree:true});
+
+  function parseScore(txt){ const m = String(txt||'').match(/(\d+)/); return m ? parseInt(m[1],10) : 0; }
+
+  function attach(q){
+    const root = document.querySelector(q.anchor);
+    if(!root) return;
+    root.addEventListener('click', function(ev){
+      const btn = ev.target.closest('button');
+      if(!btn) return;
+      setTimeout(function(){
+        const el = document.querySelector(q.scoreSel);
+        const scoreVal = parseScore(el ? el.textContent : '0');
+        window[q.triesVar] = (window[q.triesVar]||0) + 1;
+        window[q.bonnesVar] = scoreVal;
+        if (window.__updateLive){
+          window.__updateLive({ key:q.key, title:q.title, anchor:q.anchor, bonnesVar:q.bonnesVar, triesVar:q.triesVar });
+        }
+      }, 60);
+    }, true);
   }
-  document.addEventListener('DOMContentLoaded', ()=> setTimeout(()=> QUIZZES.forEach(setup),0));
+
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(()=> QUIZZES.forEach(attach), 0);
+  });
 })();
