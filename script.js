@@ -1,68 +1,3 @@
-
-// === Menu: S'identifier + Suivi / Notes (injection robuste) ===
-(function(){
-  if (window.__menu_injected__) return; window.__menu_injected__ = true;
-
-  function ensureProgression(){
-    if (typeof window.recordQuiz !== 'function'){
-      var s = document.createElement('script'); s.src = 'progression.js'; s.defer = true; document.head.appendChild(s);
-    }
-  }
-  ensureProgression();
-
-  function addEntries(ul){
-    if (!ul || ul.querySelector('[data-extra="identifiant"]')) return;
-    var liId = document.createElement('li'); liId.setAttribute('data-extra','identifiant');
-    var aId = document.createElement('a'); aId.href='#'; aId.textContent="📛 S'identifier";
-    aId.onclick = function(e){ e.preventDefault(); if (window.openIdModal) window.openIdModal(); };
-    liId.appendChild(aId);
-
-    var liSuivi = document.createElement('li'); liSuivi.setAttribute('data-extra','suivi');
-    var aSuivi = document.createElement('a'); aSuivi.href='suivi.html'; aSuivi.textContent='📊 Suivi / Notes';
-    liSuivi.appendChild(aSuivi);
-
-    var sep = document.createElement('li'); sep.setAttribute('data-extra','separator'); sep.style.borderTop='1px solid #ddd'; sep.style.margin='8px 0';
-
-    ul.insertBefore(sep, ul.firstChild);
-    ul.insertBefore(liSuivi, ul.firstChild);
-    ul.insertBefore(liId, ul.firstChild);
-  }
-
-  function findMenu(){
-    return document.getElementById('sidebar-menu') || document.querySelector('nav.sidebar ul, nav ul, .sidebar ul, .menu ul, .menu');
-  }
-
-  function tryInject(){
-    var ul = findMenu();
-    if (ul){ addEntries(ul); return true; }
-    return false;
-  }
-
-  if (!tryInject()){
-    const mo = new MutationObserver(()=>{ if (tryInject()) mo.disconnect(); });
-    mo.observe(document.documentElement, {childList:true, subtree:true});
-  }
-
-  // Helper résultat sous quiz
-  window.showInlineResult = function(anchorSelector, bonnes, fautes, total){
-    var host = document.querySelector(anchorSelector);
-    if(!host) return;
-    var box = host.querySelector('.inline-result-box');
-    if(!box){
-      box = document.createElement('div');
-      box.className = 'inline-result-box';
-      box.style.marginTop = '10px';
-      box.style.padding = '12px';
-      box.style.border = '1px solid #aac';
-      box.style.background = '#f8fbff';
-      box.style.borderRadius = '8px';
-      host.appendChild(box);
-    }
-    var note20 = total>0 ? Math.round((bonnes/total)*20*100)/100 : 0;
-    box.innerHTML = '<strong>Résultat :</strong> ' + bonnes + ' bonnes, ' + fautes + ' fautes, ' + total + ' au total — <strong>' + note20 + '/20</strong>';
-  };
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
     // === NAVIGATION ENTRE ÉTAPES ===
     const menuItems = document.querySelectorAll(".menu-item");
@@ -918,4 +853,37 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute('aria-expanded', (!expanded).toString());
     });
   }
+})();
+
+
+// === Série générique: observer les scores et enregistrer toutes les 20 tentatives ===
+(function(){
+  const QUIZZES = [
+    { anchor:'#quiz-container',     scoreSel:'#quiz-score',            id:'alphabet-phon-txt', title:'Alphabet phonétique (texte)' },
+    { anchor:'#quiz-formes',        scoreSel:'#quiz-score-forme',      id:'formes-lettres',     title:'Formes des lettres' },
+    { anchor:'#quiz-lettres-noms',  scoreSel:'#score-lettres-noms',    id:'noms-lettres',       title:'Nom des lettres' },
+    { anchor:'#quiz-harakat',       scoreSel:'#harakat-score',         id:'harakat',            title:'Voyelles courtes (harakāt)' },
+    { anchor:'#quiz-tanwin',        scoreSel:'#tanwin-score',          id:'tanwin',             title:'Tanwīn (doubles voyelles)' },
+    { anchor:'#quiz-non-liantes',   scoreSel:'#score-non-liante',      id:'liaison-lettres',    title:'Lettres liantes / non liantes' },
+    { anchor:'#quiz-mots-arabes',   scoreSel:'#score-mots-arabes',     id:'mots-simples',       title:'Mots simples' },
+    { anchor:'#quiz-phrases',       scoreSel:'#phrase-score',          id:'phrases-simples',    title:'Phrases simples' }
+  ];
+  function parseScore(txt){ const m=String(txt||'').match(/(\d+)/); return m?parseInt(m[1],10):0; }
+  function setup(q){
+    const scoreEl = document.querySelector(q.scoreSel);
+    if(!scoreEl) return;
+    let tries = 0;
+    const obs = new MutationObserver(()=>{
+      const scoreVal = parseScore(scoreEl.textContent);
+      tries++;
+      if(tries>=20){
+        const bonnes = scoreVal, total = 20, fautes = total - bonnes;
+        if (typeof window.recordQuiz === 'function') window.recordQuiz(q.id,q.title,bonnes,fautes,total);
+        if (typeof window.showInlineResult === 'function') window.showInlineResult(q.anchor,bonnes,fautes,total);
+        tries = 0;
+      }
+    });
+    obs.observe(scoreEl, {childList:true, characterData:true, subtree:true});
+  }
+  document.addEventListener('DOMContentLoaded', ()=> setTimeout(()=> QUIZZES.forEach(setup),0));
 })();
