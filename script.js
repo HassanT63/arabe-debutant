@@ -1,50 +1,49 @@
 
-// === Suivi/Progression loader + Menu entries (root paths) ===
+// === Menu: S'identifier + Suivi / Notes (injection robuste) ===
 (function(){
-  if (window.__menu_enhanced__) return;
-  window.__menu_enhanced__ = true;
+  if (window.__menu_injected__) return; window.__menu_injected__ = true;
 
-  function onReady(fn){ if (document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  // Charger progression.js (ROOT) s'il n'est pas déjà chargé
-  if (typeof window.recordQuiz !== 'function'){
-    var s = document.createElement('script');
-    s.src = 'progression.js';
-    s.defer = true;
-    document.head.appendChild(s);
+  function ensureProgression(){
+    if (typeof window.recordQuiz !== 'function'){
+      var s = document.createElement('script'); s.src = 'progression.js'; s.defer = true; document.head.appendChild(s);
+    }
   }
+  ensureProgression();
 
-  // Insérer "📛 Identifiant" + "📊 Suivi / Notes" en premier dans le menu
-  onReady(function(){
-    var ul = document.getElementById('sidebar-menu') || document.querySelector('nav ul, .sidebar ul, .menu ul, .menu');
-    if (!ul) return;
-    if (ul.querySelector('[data-extra="identifiant"]')) return;
-
-    var liId = document.createElement('li');
-    liId.setAttribute('data-extra', 'identifiant');
-    var aId = document.createElement('a');
-    aId.href = '#';
-    aId.textContent = '📛 Identifiant';
+  function addEntries(ul){
+    if (!ul || ul.querySelector('[data-extra="identifiant"]')) return;
+    var liId = document.createElement('li'); liId.setAttribute('data-extra','identifiant');
+    var aId = document.createElement('a'); aId.href='#'; aId.textContent="📛 S'identifier";
     aId.onclick = function(e){ e.preventDefault(); if (window.openIdModal) window.openIdModal(); };
     liId.appendChild(aId);
 
-    var liSuivi = document.createElement('li');
-    liSuivi.setAttribute('data-extra', 'suivi');
-    var aSuivi = document.createElement('a');
-    aSuivi.href = 'suivi.html';
-    aSuivi.textContent = '📊 Suivi / Notes';
+    var liSuivi = document.createElement('li'); liSuivi.setAttribute('data-extra','suivi');
+    var aSuivi = document.createElement('a'); aSuivi.href='suivi.html'; aSuivi.textContent='📊 Suivi / Notes';
     liSuivi.appendChild(aSuivi);
 
-    var hr = document.createElement('li');
-    hr.setAttribute('data-extra','separator');
-    hr.style.borderTop = '1px solid #ddd';
-    hr.style.margin = '8px 0';
+    var sep = document.createElement('li'); sep.setAttribute('data-extra','separator'); sep.style.borderTop='1px solid #ddd'; sep.style.margin='8px 0';
 
-    ul.insertBefore(hr, ul.firstChild);
+    ul.insertBefore(sep, ul.firstChild);
     ul.insertBefore(liSuivi, ul.firstChild);
     ul.insertBefore(liId, ul.firstChild);
-  });
+  }
 
-  // Afficher résultat sous un bloc
+  function findMenu(){
+    return document.getElementById('sidebar-menu') || document.querySelector('nav.sidebar ul, nav ul, .sidebar ul, .menu ul, .menu');
+  }
+
+  function tryInject(){
+    var ul = findMenu();
+    if (ul){ addEntries(ul); return true; }
+    return false;
+  }
+
+  if (!tryInject()){
+    const mo = new MutationObserver(()=>{ if (tryInject()) mo.disconnect(); });
+    mo.observe(document.documentElement, {childList:true, subtree:true});
+  }
+
+  // Helper résultat sous quiz
   window.showInlineResult = function(anchorSelector, bonnes, fautes, total){
     var host = document.querySelector(anchorSelector);
     if(!host) return;
@@ -242,15 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("quiz-score").textContent = "Score : " + score;
-        window.__triesPhonTxt = (window.__triesPhonTxt||0) + 1;
-        if (window.__triesPhonTxt >= 20) {
-          const bonnes = score, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('alphabet-phon-txt','Alphabet phonétique (texte)',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-container', bonnes, fautes, total);
-          window.__triesPhonTxt = 0; score = 0; document.getElementById("quiz-score").textContent = "Score : 0";
-        } else {
-          setTimeout(newQuizQuestion, 1000);
-        }
+        setTimeout(newQuizQuestion, 1000);
       };
       options.appendChild(btn);
     });
@@ -413,15 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         score.textContent = "Score : " + scoreLettreNom;
-        window.__triesNom = (window.__triesNom||0) + 1;
-        if (window.__triesNom >= 20) {
-          const bonnes = scoreLettreNom, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('noms-lettres','Nom des lettres',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-lettres-noms', bonnes, fautes, total);
-          scoreLettreNom = 0; window.__triesNom = 0; score.textContent = "Score : 0";
-        } else {
-          setTimeout(nouvelleQuestionLettreNom, 3000);
-        }
+        setTimeout(nouvelleQuestionLettreNom, 3000);
       };
       
       reponses.appendChild(btn);
@@ -509,15 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("harakat-score").textContent = "Score : " + scoreHarakat;
-        window.__triesHarakat = (window.__triesHarakat||0) + 1;
-        if (window.__triesHarakat >= 20) {
-          const bonnes = scoreHarakat, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('harakat','Voyelles courtes (harakāt)',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-harakat', bonnes, fautes, total);
-          scoreHarakat = 0; window.__triesHarakat = 0; document.getElementById("harakat-score").textContent = "Score : 0";
-        } else {
-          setTimeout(nouvelleQuestionHarakat, 3500);
-        }
+        setTimeout(nouvelleQuestionHarakat, 3500);
       };
       optionsZone.appendChild(btn);
     });
@@ -596,15 +571,7 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("tanwin-score").textContent = "Score : " + scoreTanwin;
-        window.__triesTanwin = (window.__triesTanwin||0) + 1;
-        if (window.__triesTanwin >= 20) {
-          const bonnes = scoreTanwin, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('tanwin','Tanwīn (doublement voyelles)',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-tanwin', bonnes, fautes, total);
-          scoreTanwin = 0; window.__triesTanwin = 0; document.getElementById("tanwin-score").textContent = "Score : 0";
-        } else {
-          setTimeout(nouvelleQuestionTanwin, 3500);
-        }
+        setTimeout(nouvelleQuestionTanwin, 3500);
       };
       optionsZone.appendChild(btn);
     });
@@ -650,15 +617,7 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.style.color = "red";
         }
         document.getElementById("score-non-liante").textContent = "Score : " + scoreNonLiante;
-        window.__triesNL = (window.__triesNL||0) + 1;
-        if (window.__triesNL >= 20) {
-          const bonnes = scoreNonLiante, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('liaison-lettres','Lettres liantes / non liantes',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-non-liantes', bonnes, fautes, total);
-          scoreNonLiante = 0; window.__triesNL = 0; document.getElementById("score-non-liante").textContent = "Score : 0";
-        } else {
-          setTimeout(nouvelleQuestionNonLiante, 3000);
-        }
+        setTimeout(nouvelleQuestionNonLiante, 3000);
       };
     });
   }
@@ -930,15 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         document.getElementById("phrase-score").textContent = "Score : " + scorePhrases;
-        window.__triesPhrases = (window.__triesPhrases||0) + 1;
-        if (window.__triesPhrases >= 20) {
-          const bonnes = scorePhrases, total = 20, fautes = total - bonnes;
-          if (typeof window.recordQuiz === 'function') window.recordQuiz('phrases-simples','Phrases simples',bonnes,fautes,total);
-          window.showInlineResult && window.showInlineResult('#quiz-phrases', bonnes, fautes, total);
-          scorePhrases = 0; window.__triesPhrases = 0; document.getElementById("phrase-score").textContent = "Score : 0";
-        } else {
-          boutonSuivant.style.display = "inline-block";
-        }
+        boutonSuivant.style.display = "inline-block";
       };
       optionsZone.appendChild(btn);
     });
