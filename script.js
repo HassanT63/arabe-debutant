@@ -1,36 +1,75 @@
 
-// === Résultat live sous quiz + enregistrement série ===
-window.showInlineResult = window.showInlineResult || function(anchorSelector, bonnes, fautes, total){
-  var host = document.querySelector(anchorSelector);
-  if(!host) return;
-  var box = host.querySelector('.inline-result-box');
-  if(!box){
-    box = document.createElement('div');
-    box.className = 'inline-result-box';
-    box.style.marginTop = '10px';
-    box.style.padding = '12px';
-    box.style.border = '1px solid #aac';
-    box.style.background = '#f8fbff';
-    box.style.borderRadius = '8px';
-    host.appendChild(box);
-  }
-  var note20 = total>0 ? Math.round((bonnes/total)*20*100)/100 : 0;
-  box.innerHTML = '<strong>Résultat :</strong> ' + bonnes + ' bonnes, ' + fautes + ' fautes, ' + total + ' au total — <strong>' + note20 + '/20</strong>';
-};
+/* ====== BOOTSTRAP ID + NOTE LIVE (MOBILE + PC) ====== */
+(function(){
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest('li[data-extra="identifiant"] a');
+    if(!a) return;
+    ev.preventDefault();
+    var tries = 0;
+    (function waitModal(){
+      tries++;
+      if (typeof window.openIdModal === 'function'){ window.openIdModal(); return; }
+      if (tries < 50) return setTimeout(waitModal, 80);
+      alert("Chargement de l'identification… réessayez.");
+    })();
+  }, true);
 
-window.__updateLive = window.__updateLive || function(state){
-  const bonnes = window[state.bonnesVar] || 0;
-  const tries  = window[state.triesVar]  || 0;
-  const fautes = Math.max(0, tries - bonnes);
-  window.showInlineResult(state.anchor, bonnes, fautes, tries);
-  if (tries >= 20) {
-    if (typeof window.recordQuiz === 'function') {
-      window.recordQuiz(state.key, state.title, bonnes, fautes, 20);
+  window.showInlineResult = window.showInlineResult || function(anchorSelector, bonnes, fautes, total){
+    var host = document.querySelector(anchorSelector);
+    if(!host) return;
+    var box = host.querySelector('.inline-result-box');
+    if(!box){
+      box = document.createElement('div');
+      box.className = 'inline-result-box';
+      box.style.marginTop = '10px';
+      box.style.padding = '12px';
+      box.style.border = '1px solid #aac';
+      box.style.background = '#f8fbff';
+      box.style.borderRadius = '8px';
+      host.appendChild(box);
     }
-    window[state.bonnesVar] = 0;
-    window[state.triesVar]  = 0;
+    var note20 = total>0 ? Math.round((bonnes/total)*20*100)/100 : 0;
+    box.innerHTML = '<strong>Résultat :</strong> ' + bonnes + ' bonnes, ' + fautes + ' fautes, ' + total + ' au total — <strong>' + note20 + '/20</strong>';
+  };
+
+  var QUIZZES = [
+    { key:'alphabet-phon-txt', title:'Alphabet phonétique (texte)',  anchor:'#quiz-container',    feedback:'#quiz-feedback' },
+    { key:'formes-lettres',    title:'Formes des lettres',           anchor:'#quiz-formes',       feedback:'#quiz-feedback-forme' },
+    { key:'noms-lettres',      title:'Nom des lettres',              anchor:'#quiz-lettres-noms', feedback:'#feedback-lettres-noms' },
+    { key:'harakat',           title:'Voyelles courtes (harakāt)',   anchor:'#quiz-harakat',      feedback:'#harakat-feedback' },
+    { key:'tanwin',            title:'Tanwīn (doubles voyelles)',    anchor:'#quiz-tanwin',       feedback:'#tanwin-feedback' },
+    { key:'liaison-lettres',   title:'Lettres liantes / non liantes',anchor:'#quiz-non-liantes',  feedback:'#feedback-non-liante' },
+  ];
+
+  function attach(q){
+    var host = document.querySelector(q.anchor);
+    if(!host) return;
+    var fb = host.querySelector(q.feedback) || host.querySelector('[id*="feedback"]');
+    if(!fb) return;
+    var goodVar = '__good_'+q.key, triesVar='__tries_'+q.key;
+    window[goodVar] = window[goodVar] || 0;
+    window[triesVar] = window[triesVar] || 0;
+
+    var obs = new MutationObserver(function(){
+      var txt = (fb.textContent||'').toLowerCase();
+      if(!txt.trim()) return;
+      window[triesVar]++;
+      if (txt.includes('bonne') || txt.includes('✅')) window[goodVar]++;
+      var bonnes = window[goodVar], tries = window[triesVar], fautes = Math.max(0, tries - bonnes);
+      window.showInlineResult(q.anchor, bonnes, fautes, tries);
+      if (tries >= 20 && typeof window.recordQuiz === 'function'){
+        window.recordQuiz(q.key, q.title, bonnes, fautes, 20);
+        window[goodVar] = 0; window[triesVar] = 0;
+      }
+    });
+    obs.observe(fb, {childList:true, characterData:true, subtree:true});
   }
-};
+
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(function(){ QUIZZES.forEach(attach); }, 0);
+  });
+})();
+/* ====== FIN BOOTSTRAP ====== */
 
 document.addEventListener("DOMContentLoaded", () => {
     // === NAVIGATION ENTRE ÉTAPES ===
@@ -887,43 +926,4 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute('aria-expanded', (!expanded).toString());
     });
   }
-})();
-
-
-// === Délégation de clics pour MAJ live à chaque réponse (mobile + PC) ===
-(function(){
-  const QUIZZES = [
-    { anchor:'#quiz-container',     scoreSel:'#quiz-score',            key:'alphabet-phon-txt', title:'Alphabet phonétique (texte)', bonnesVar:'__good_phon',   triesVar:'__tries_phon' },
-    { anchor:'#quiz-formes',        scoreSel:'#quiz-score-forme',      key:'formes-lettres',     title:'Formes des lettres',          bonnesVar:'__good_forme',  triesVar:'__tries_forme' },
-    { anchor:'#quiz-lettres-noms',  scoreSel:'#score-lettres-noms',    key:'noms-lettres',       title:'Nom des lettres',             bonnesVar:'__good_nom',     triesVar:'__tries_nom' },
-    { anchor:'#quiz-harakat',       scoreSel:'#harakat-score',         key:'harakat',            title:'Voyelles courtes (harakāt)',  bonnesVar:'__good_harakat', triesVar:'__tries_harakat' },
-    { anchor:'#quiz-tanwin',        scoreSel:'#tanwin-score',          key:'tanwin',             title:'Tanwīn (doubles voyelles)',   bonnesVar:'__good_tanwin',  triesVar:'__tries_tanwin' },
-    { anchor:'#quiz-non-liantes',   scoreSel:'#score-non-liante',      key:'liaison-lettres',    title:'Lettres liantes / non liantes', bonnesVar:'__good_nl',   triesVar:'__tries_nl' },
-    { anchor:'#quiz-mots-arabes',   scoreSel:'#score-mots-arabes',     key:'mots-simples',       title:'Mots simples',                bonnesVar:'__good_mots',    triesVar:'__tries_mots' },
-    { anchor:'#quiz-phrases',       scoreSel:'#phrase-score',          key:'phrases-simples',    title:'Phrases simples',             bonnesVar:'__good_phr',     triesVar:'__tries_phr' }
-  ];
-
-  function parseScore(txt){ const m = String(txt||'').match(/(\d+)/); return m ? parseInt(m[1],10) : 0; }
-
-  function attach(q){
-    const root = document.querySelector(q.anchor);
-    if(!root) return;
-    root.addEventListener('click', function(ev){
-      const btn = ev.target.closest('button');
-      if(!btn) return;
-      setTimeout(function(){
-        const el = document.querySelector(q.scoreSel);
-        const scoreVal = parseScore(el ? el.textContent : '0');
-        window[q.triesVar] = (window[q.triesVar]||0) + 1;
-        window[q.bonnesVar] = scoreVal;
-        if (window.__updateLive){
-          window.__updateLive({ key:q.key, title:q.title, anchor:q.anchor, bonnesVar:q.bonnesVar, triesVar:q.triesVar });
-        }
-      }, 60);
-    }, true);
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    setTimeout(()=> QUIZZES.forEach(attach), 0);
-  });
 })();
